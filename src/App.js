@@ -27,13 +27,23 @@ class App extends React.Component {
   render() {
     return (
       <div id="drum-machine" className="App">
-        {
-          this.kicks.map(kick =>
-            <Drum id={kick.id} src={kick.audio_src}></Drum>
-          )
-        }
-        <div id="display">
-          {this.state.currentKick}
+        <div className='pad-bank'>
+
+          {
+            this.kicks.map(kick =>
+              <Drum id={kick.id} src={kick.audio_src}></Drum>
+            )
+          }
+        </div>
+        <div className='controls'>
+          <div className='control'>
+            <p>Power</p>
+
+          </div>
+          <p id="display">{this.state.currentKick}</p>
+          <div className='volum-slider'>
+            <input max="1" min="0" step="0.01" type='range' value="0.41"></input>
+          </div>
         </div>
       </div>
     );
