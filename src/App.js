@@ -7,10 +7,15 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      currentKick: ''
+      display: '',
+      volume: 0.4,
+      power: true
     }
 
     this.updateDisplay = this.updateDisplay.bind(this);
+    this.volumChange = this.volumChange.bind(this);
+    this.clearDisplay = this.clearDisplay.bind(this);
+    this.switchPower = this.switchPower.bind(this);
   }
 
   kicks = [
@@ -27,29 +32,53 @@ class App extends React.Component {
 
   updateDisplay(drumName) {
     this.setState({
-      currentKick: drumName
+      display: drumName
     })
+  }
+
+  volumChange(e) {
+    if (this.state.power) {
+      this.setState({
+        volume: e.target.value,
+        display: "Volumn: " + Math.round(100 * e.target.value)
+      });
+      setTimeout(() => this.clearDisplay(), 1000)
+    }
+  }
+
+  clearDisplay() {
+    this.setState({
+      display: ''
+    })
+  }
+
+  switchPower(){
+    this.setState(state => ({
+      power: !state.power
+    }))
   }
 
   render() {
     return (
-      <div id="drum-machine" className="App">
+      <div id="drum-machine" className="inner-container">
         <div className='pad-bank'>
 
           {
             this.kicks.map(kick =>
-              <Drum id={kick.id} src={kick.audio_src} displayName={kick.name} updateDisplay={this.updateDisplay}></Drum>
+              <Drum id={kick.id} src={kick.audio_src} power={this.state.power} volume={this.state.volume} displayName={kick.name} updateDisplay={this.updateDisplay}></Drum>
             )
           }
         </div>
         <div className='controls'>
           <div className='control'>
             <p>Power</p>
-
+            <div className='select'>
+              <div className='inner' onClick={this.switchPower} style={{ float: this.state.power ? 'right':'left' }}></div>
+            </div>
           </div>
-          <p id="display">{this.state.currentKick}</p>
+          <p id="display">{this.state.display}</p>
           <div className='volum-slider'>
-            <input max="1" min="0" step="0.01" type='range' value="0.41"></input>
+            <input max="1" min="0" step="0.01" type='range' onChange={this.volumChange} value={this.state.volume} />
           </div>
         </div>
       </div>
