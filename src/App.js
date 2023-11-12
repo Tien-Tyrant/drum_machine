@@ -25,8 +25,10 @@ class App extends React.Component {
     { id: "C", name: "Close-HH", audio_src: "https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3" },
   ]
 
-  updateDisplay() {
-
+  updateDisplay(drumName) {
+    this.setState({
+      currentKick: drumName
+    })
   }
 
   render() {
